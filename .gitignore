@@ -55,3 +55,6 @@ lib-cov
 # Editors
 .idea/
 .vscode/
+
+
+*.db
