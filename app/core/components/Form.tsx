@@ -1,7 +1,9 @@
-import { ReactNode, PropsWithoutRef } from "react"
+import { Alert, Button, Flex } from "@chakra-ui/react"
+import { validateZodSchema } from "blitz"
+import { PropsWithoutRef, ReactNode } from "react"
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { z } from "zod"
-import { validateZodSchema } from "blitz"
+
 export { FORM_ERROR } from "final-form"
 
 export interface FormProps<S extends z.ZodType<any, any>>
@@ -29,28 +31,30 @@ export function Form<S extends z.ZodType<any, any>>({
       validate={validateZodSchema(schema)}
       onSubmit={onSubmit}
       render={({ handleSubmit, submitting, submitError }) => (
-        <form onSubmit={handleSubmit} className="form" {...props}>
-          {/* Form fields supplied as children are rendered here */}
-          {children}
+        <Flex flexDir="column">
+          <form onSubmit={handleSubmit} className="form" {...props}>
+            {/* Form fields supplied as children are rendered here */}
+            {children}
 
-          {submitError && (
-            <div role="alert" style={{ color: "red" }}>
-              {submitError}
-            </div>
-          )}
+            {submitError && (
+              <Alert role="alert" color="red">
+                {submitError}
+              </Alert>
+            )}
 
-          {submitText && (
-            <button type="submit" disabled={submitting}>
-              {submitText}
-            </button>
-          )}
+            {submitText && (
+              <Button type="submit" disabled={submitting} isLoading={submitting}>
+                {submitText}
+              </Button>
+            )}
 
-          <style global jsx>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style>
-        </form>
+            <style global jsx>{`
+              .form > * + * {
+                margin-top: 1rem;
+              }
+            `}</style>
+          </form>
+        </Flex>
       )}
     />
   )
