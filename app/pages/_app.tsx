@@ -1,23 +1,27 @@
+import "app/styles/global.css"
+
+import { ChakraProvider } from "@chakra-ui/react"
+import LoginForm from "app/auth/components/LoginForm"
+import Layout from "app/core/layouts/Layout"
 import {
   AppProps,
-  ErrorBoundary,
-  ErrorComponent,
   AuthenticationError,
   AuthorizationError,
+  ErrorBoundary,
+  ErrorComponent,
   ErrorFallbackProps,
   useQueryErrorResetBoundary,
 } from "blitz"
-import LoginForm from "app/auth/components/LoginForm"
 
 export default function App({ Component, pageProps }: AppProps) {
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>)
 
   return (
     <ErrorBoundary
       FallbackComponent={RootErrorFallback}
       onReset={useQueryErrorResetBoundary().reset}
     >
-      {getLayout(<Component {...pageProps} />)}
+      <ChakraProvider>{getLayout(<Component {...pageProps} />)}</ChakraProvider>
     </ErrorBoundary>
   )
 }
